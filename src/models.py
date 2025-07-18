@@ -19,43 +19,57 @@ class User(db.Model):
             "id": self.id,
             "username": self.username,
             "email": self.email
-            # No expose password
         }
 
     def __str__(self):
         return self.username or f"User {self.id}"
 
+
 class Character(db.Model):
     __tablename__ = 'character'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(String(120), nullable=False)
+    gender = db.Column(String(20))
+    birth_year = db.Column(String(20))
+    height = db.Column(String(10))
 
     favorites = relationship('Favorite', back_populates='character', cascade="all, delete-orphan")
 
     def serialize(self):
         return {
             "id": self.id,
-            "name": self.name
+            "name": self.name,
+            "gender": self.gender,
+            "birth_year": self.birth_year,
+            "height": self.height
         }
 
     def __str__(self):
         return self.name or f"Character {self.id}"
 
+
 class Planet(db.Model):
     __tablename__ = 'planet'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(String(120), nullable=False)
+    climate = db.Column(String(120))
+    terrain = db.Column(String(120))
+    population = db.Column(String(120))
 
     favorites = relationship('Favorite', back_populates='planet', cascade="all, delete-orphan")
 
     def serialize(self):
         return {
             "id": self.id,
-            "name": self.name
+            "name": self.name,
+            "climate": self.climate,
+            "terrain": self.terrain,
+            "population": self.population
         }
 
     def __str__(self):
         return self.name or f"Planet {self.id}"
+
 
 class Favorite(db.Model):
     __tablename__ = 'favorite'
